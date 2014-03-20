@@ -1,0 +1,2 @@
+chromosomeName	fragmentStart	fragmentEnd	fragmentCentre	isNonBlind	fragmentLength	leftFragEndLength	rightFragEndLength	leftFragEndValid	rightFragEndValid
+1	8	23	16	TRUE	16	6	6	FALSE	FALSE

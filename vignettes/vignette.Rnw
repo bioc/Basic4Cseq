@@ -1,0 +1,318 @@
+%\VignetteIndexEntry{Basic4Cseq: an R/Bioconductor package for the analysis of 4C-seq data}
+%\VignettePackage{Basic4Cseq}
+
+\documentclass[10pt]{article}
+
+\usepackage{times}
+\usepackage{hyperref}
+
+\textwidth=6.2in
+\textheight=8.5in
+\oddsidemargin=.1in
+\evensidemargin=.1in
+\headheight=-.3in
+
+\newcommand{\Rfunction}[1]{{\texttt{#1}}}
+\newcommand{\Robject}[1]{{\texttt{#1}}}
+\newcommand{\Rpackage}[1]{{\textit{#1}}}
+\newcommand{\Rmethod}[1]{{\texttt{#1}}}
+\newcommand{\Rfunarg}[1]{{\texttt{#1}}}
+\newcommand{\Rclass}[1]{{\textit{#1}}}
+\newcommand{\Rcode}[1]{{\texttt{#1}}}
+
+\SweaveOpts{prefix.string=Basic4Cseq}
+
+\begin{document}
+\SweaveOpts{concordance=TRUE}
+
+\title{Basic4Cseq: an R/Bioconductor package for the analysis of 4C-seq data}
+\author{Carolin Walter}
+\date{\today}
+
+\maketitle
+
+\tableofcontents
+
+<<echo=FALSE>>=
+options(width=90)
+options(continue=" ")
+@
+
+
+\section{Introduction}
+
+
+Chromosome conformation capture combined with high-throughput sequencing (4C-seq) is a method that allows the identification of chromosomal interactions between one potential interaction partner, called viewpoint, and virtually any other part of the genome, without prior knowledge of potential interaction partners \cite{vandeWerken01}. 
+Unlike regular NGS data, the raw short reads from a 4C-seq experiment can only originate from precisely defined points in the genome. 
+Special care has therefore be taken to filter non-valid reads and to avoid forms of bias due to differences in fragment features.
+
+A typical workflow for the analysis of 4C-seq data consists of the following steps \cite{vandeWerken01, Gheldof01}: \\
+
+\begin{enumerate}
+  \item Virtual fragment library creation 
+  \item Mapping from reads to fragments
+  \item Fragment-based analysis and processing (filtering, normalization, quality controls...) 
+  \item Visualization 
+\end{enumerate}
+Due to the high coverage around the experiment's viewpoint and sparse remote data, different routines for near-cis and far-cis / trans visualization are necessary. Statistical enrichment approaches are advisable for the analysis of genomic areas remote from the viewpoint \cite{Splinter01}.
+
+\Rpackage{Basic4Cseq} can create virtual fragment libraries for BSGenome packages, map provided reads to fragments, and offers functions for basic filtering and normalization of the 4C-seq data. Near-cis visualization routines are included, as well as a function for the visualization of imported trans-interaction intervals. Basic quality controls (cp.\cite{vandeWerken02}) offer further information on the read distribution of the 4C-seq data.
+
+
+\subsection{Loading the package}
+After installation, the package can be loaded into R by typing 
+<<preliminaries>>=
+library(Basic4Cseq)
+@
+into the R console. \\
+
+\subsection{Provided functionality}
+
+\Rpackage{Basic4Cseq} requires the R-packages \Rpackage{ShortRead}, \Rpackage{Biostrings}, \Rpackage{caTools}, and \Rpackage{GenomicRanges}. While the package \Rpackage{BSgenome.Ecoli.NCBI.20080805} is used for example purposes, the package \Rpackage{BSgenome.Hsapiens.UCSC.hg19} or any respective corresponding BSgenome package (e.g. for Mus musculus) is suggested for the analysis of real 4C-seq data. Optional visualization of imported long-range interaction intervals requires the package \Rpackage{RCircos}. 
+
+This package provides the following basic functions for the analysis of 4C-seq data: \\
+\begin{itemize}
+  \item \Rfunction{createVirtualFragmentLibrary}: Creation of virtual fragment libraries for BSgenome packages, including filtering options on fragment level (size of fragments and fragment ends, presence of second restriction enzyme cutting site)
+  \item \Rfunction{readsToFragments}: Mapping functionality from reads to 4C-seq fragments
+  \item \Rfunction{getReadDistribution}: Quality control based on the read distribution in fragment ends 
+  \item \Rfunction{normalizeFragmentData}: Normalization of fragment read count (RPM)
+  \item \Rfunction{visualizeViewpoint}: Near-cis visualization (coverage plot with running median / running mean smoothing and quantile visualization) 
+  \item \Rfunction{drawHeatmap}: Near-cis domainogram visualization (heatmap-like multi-scale contact profiles)
+\end{itemize}
+
+\centerline{}
+
+Optional functions include:\\
+\begin{itemize}
+  \item \Rfunction{printWigFile}: Export of fragment data as wig-files
+  \item \Rfunction{plotTransInteractions}: Import and visualization of trans interaction intervals
+  \item \Rfunction{prepare4CseqData}: Wrapper for the alignment of FASTQ files and filtering of the resulting SAM / BAM files, if external tools (BWA \cite{Li01}, SAMtools \cite{Li02}, BEDtools \cite{Quinlan01}) are available
+  \item \Rfunction{checkRestrictionEnzymeSequence}: Filtering option for valid 4C-seq reads in BAM-files
+  \item \Rfunction{simulateDigestion}: Simulated digestion of a genome with two restriction enzymes, assuming full enzyme efficiency, and without consideration of fragment types or filtering options
+\end{itemize}
+
+
+\section{Data preparation and bioinformatics software}
+The main input format for \Rpackage{Basic4Cseq}'s main functions is the binary alignment / map (BAM) format. Virtually any alignment software can be used to map the raw experimental data to the corresponding reference genome. However, BWA is suggested for both its speed and its direct control over the number of allowed mismatches. Optional filtering steps use SAMtools and BEDtools to remove invalid reads in the BAM file.
+
+A virtual fragment library is required for the analysis of 4C-seq data. This library contains information on 4C-seq fragments and can be created for virtually any genome present as BSgenome package. Information stored consists of the position of the fragment, presence of a second restriction enzyme site, length of the fragment, length of both fragment ends, and validity of the fragment ends (i.e. a fragment end has to be unique and may not exceed a specified minimum and maximum length, if such thresholds are given). While the processing of the data takes time and hard disk space, the library can be preprocessed and applied to any experiment with the same underlying genome, restriction enzyme combination, and read length.
+
+
+\section{Analysis of 4C-seq data: From aligned reads to near-cis plots}
+\Rpackage{Basic4Cseq} offers functions for basic filtering, analysis and subsequent visualization of 4C-seq data. Fetal liver data of \cite{Stadhouders01} is included in this package to demonstrate its functionality. Only a fraction of the original reads are included due to space limits and to speed up the analysis.
+
+\subsection{Creation of a fragment library}
+While the virtual fragment library needed for the analysis of Stadhouders et al's fetal liver data is already included in \Rpackage{Basic4Cseq}, the creation of the corresponding library is usually the first step for the analysis of 4C-seq data. 
+We demonstrate the process on a short example string:
+
+<<label=createVirtualFragmentLibrary, eval=TRUE>>=
+testGenome = DNAString("ATCATGAAGTACTACATGGCACCATGT")
+fragmentData = createVirtualFragmentLibrary(chosenGenome = testGenome, firstCutter = "catg", secondCutter = "gtac", readLength = 2,  chromosomeName = "test", libraryName = "")
+head(fragmentData)
+@
+
+The function splits a given genome (or chromosome) at the provided primary restriction sites. The resulting fragments are scanned for the presence of a secondary restriction site, and the ends of each fragment are checked for uniqueness and their length. The created virtual fragment library is then written to hard disk. Per default, only nonblind fragments are kept, but it is possible to include any blind fragments as well. Since blind fragments are a source of bias, the data has to be interpreted with caution \cite{vandeWerken02}. \Rfunction{createVirtualFragmentLibrary} can also mark fragments or fragment ends with a length above or below certain thresholds as invalid, thus providing the option to remove fragments or fragment ends which are extremely long or short.
+
+The virtual fragment library for the fetal liver data can be created in a similar way. The time needed for the creation of the library is proportional to the length of the genome, so computing a library for longer genomes takes time.
+<<label=l2, eval=FALSE>>=
+library(BSgenome.Mmusculus.UCSC.mm9)
+createVirtualFragmentLibrary(chosenGenome = Mmusculus, firstCutter = "aagctt", secondCutter = "catg", readLength = 54,  libraryName = "myFullFetalLiverVFL.csv")
+@
+
+For the following analysis, we therefore import both a prepared virtual fragment library and the raw read data:
+<<label=loadFetalLiverRawData, eval=TRUE>>=
+  library(ShortRead)
+  libraryFile <- system.file("extdata", "vfl_aagctt_catg_mm9_54_vp.csv", package="Basic4Cseq")
+  bamFile <- system.file("extdata", "fetalLiverShort.bam", package="Basic4Cseq")
+  liverReads <- readAligned(bamFile, type = "BAM")
+  liverReads
+@
+
+The virtual fragment library contains the 4C-seq fragment data for the enzyme combination HindIII ("AAGCTT") and NlaIII ("CATG"), the corresponding genome MM9 and a read length of 54 bp. Only the fragments around the experiment's viewpoint on chromosome 10 are included due to space constrains.
+
+\subsection{Initialization of a Data4Cseq object}
+
+The fragment library is central for the analysis of 4C-seq data, but some meta data is useful as well. Since we wish to mark some points of interest in the near-cis visualizations (e.g. the experiment's viewpoint), we load and add the information that is stored in a provided BED-file (with an additional column to store colour information):
+<<label=addPointsOfInterest, eval=TRUE>>=
+  pointsOfInterestFile <- system.file("extdata", "fetalLiverVP.bed", package="Basic4Cseq")
+  liverPoints<-readPointsOfInterestFile(pointsOfInterestFile)
+  liverPoints
+@
+
+With a virtual fragment library, reads and meta data at our disposal, we can now create a Data4Cseq object. 
+
+<<label=initializeObject, eval=TRUE>>=
+liverData = Data4Cseq(viewpointChromosome = "10", viewpointInterval = c(20879870, 20882209), readLength = 54, pointsOfInterest = liverPoints, rawReads = liverReads)
+liverData
+@
+
+
+
+The reads are then mapped to the predefined fragment library:
+<<label=initializeObject, eval=TRUE>>=
+  rawFragments(liverData)<-readsToFragments(liverData, libraryFile)
+  liverData
+@
+
+
+\subsection{Filtering and normalization}
+For near-cis visualizations, all data on chromosomes that do not contain the viewpoint are irrelevant. While it is possible to visualize the whole viewpoint chromosome as "near-cis" plot, the visibility of peaks around the viewpoint is increased dramatically if the visualization region is restricted to this area. Since \Rpackage{Basic4Cseq} focuses on the creation of near-cis plots (in contrast to far-cis interactions), we pick a region around the experiment's viewpoint for visualization. Fragments adjacent to the viewpoint are per default removed to prevent bias through overrepresented sequences caused by self-ligation. 
+
+<<label=initializeObject, eval=TRUE>>=
+  # pick near-cis fragments
+  nearCisFragments(liverData)<-chooseNearCisFragments(liverData, regionCoordinates = c(20800000, 21100000))
+  head(nearCisFragments(liverData))
+@
+
+The raw read count can then be RPM-normalized to allow for better comparability between different plots.
+<<label=normalizeObject, eval=TRUE>>=
+  # normalization of near-cis data
+  library("caTools")
+  nearCisFragments(liverData)<-normalizeFragmentData(liverData)
+  head(nearCisFragments(liverData))
+@
+
+
+\subsection{Quality control}
+The distribution of reads throughout the genome provides information on the quality of the 4C-seq experiment data. \Rpackage{Basic4Cseq} provides the following quality statistics: the number of total reads, cis to overall ratio of reads, and the percentage of covered fragment ends within a certain distance around the experiment's viewpoint. Reference values for high-quality experiments, as provided by van de Werken et al \cite{vandeWerken02}, are more than one million reads total, a cis to overall ratio of more than 40\% and a large fraction of covered fragment ends in the viewpoint's vicinity
+
+<<label=qualityControl, eval=TRUE>>=
+  getReadDistribution(liverData, useFragEnds = TRUE, outputName = "")
+@
+
+Since the example data is is taken from the experiment's viewpoint chromosome, the cis to overall ratio is unrealistic. A relatively low number of fragment ends in the viewpoint's vicinity is covered for the example data; this number rises significantly if the complete data set of Stadhouders et al is used.
+
+The statistics can be exported as a standard text file, or printed on screen if no output file name is provided.
+
+
+\subsection{Near-cis visualization}
+
+\Rpackage{Basic4Cseq} offers two visualization routines for near-cis interactions, a coverage plot and an additional multi-scale contact intensity profile in a domainogram- or heatmap-like format. Both plots can be exported as PDF or TIFF file, the format is automatically chosen according to the file name. If no file name is provided, the plot is printed on screen. Pre-defined regions of interest can be marked in both plots. Fragment end data can be used directly, or the values can be interpolated on fragment level.
+
+The visualization strategy for the coverage plot is similar to van de Werken et al \cite{vandeWerken01}: Fragment data is smoothed via a running median or running mean approach with a specified window size. Quantiles (per default 20\%, 50\% and 80\%) are further smoothed with R's loess function. The viewpoint region itself can be excluded from the visualization to stop overrepresented sequences (most likely caused by self-ligation) from distorting the picture. \Rfunction{visualizeViewpoint} expects a \Rclass{Data4Cseq} instance to visualize, but an alternative input of a custom data frame ("chrom", "start", "end", "reads") that contains both position and (normalized) read count of the fragment data to visualize is possible as well. The results of the example are shown in figure \ref{fig:01}.
+
+<<label=visualizeViewpoint, fig=TRUE, include=FALSE, eval=FALSE, PDF=TRUE>>=
+  # This command creates a near-cis plot of the fetal liver's viewpoint data
+  visualizeViewpoint(liverData, plotFileName = "", mainColour = "blue", plotTitle = "Fetal Liver Near-Cis Plot", loessSpan = 0.1, maxY = 6000, xAxisIntervalLength = 50000, yAxisIntervalLength = 1000)
+@
+
+\begin{figure}[h]
+  \includegraphics[width=13.5cm,height=7.5cm]{images/visualizeViewpoint_Output.pdf}
+  \caption{Near-cis coverage plot of fetal liver data taken from Stadhouders et al \cite{Stadhouders01}.}
+  \label{fig:01}
+\end{figure}
+
+For the heatmap-like intensity profile, read counts per fragment are normalized to [0, 1] and the resulting intensity values are expressed on a log2 scale to allow for better visibility of distant interactions. R's heat colours are chosen for the intensity visualization; discarded data (either repetitive fragment ends or removed blind fragments, if this option is taken) is represented in black to allow for easy visibility of regions with few valid data points. 
+The results of the example are shown in figure \ref{fig:02}.
+
+<<label=drawHeatmap, fig=TRUE, include=FALSE, eval=FALSE, PDF=TRUE>>=
+  # This command creates a near-cis heatmap plot of the fetal liver data
+  drawHeatmap(liverData, plotFileName = "", xAxisIntervalLength = 50000, bands = 5)
+@
+
+\begin{figure}[h]
+  \includegraphics[width=13.5cm,height=7.5cm]{images/drawHeatmap_Output.pdf}
+  \caption{Near-cis multi-scale contact intensity profile of fetal liver data taken from Stadhouders et al \cite{Stadhouders01}. Export as pdf and tiff is supported; the dimensions of the plot can be customized.}
+  \label{fig:02}
+\end{figure}
+
+
+\section{Far-cis and trans interactions}
+For regions located either more remote from the viewpoint or on other chromosomes, it is advisable to use a statistical enrichment approach for the analysis of the 4C-seq fragment data, e.g. \cite{Splinter01}. \Rpackage{Basic4Cseq} can export fragment-based 4C-seq data as WIG-files for use with external algorithms. Per default, no header is added to the wig data. While this is sufficient for visualizations with some tools and convenient for further downstream analysis, other tools (e.g. the UCSC Genome Browser) require a header line. \Rfunction{printWigFile} allows input of custom header lines through the parameter \Rcode{headerUCSC}. 
+
+<<label=exportWig, eval=FALSE>>=
+  printWigFile(liverData, wigFileName = "fetalLiver.wig")
+@
+
+
+Splinter et al's spider plots already offer a way to create far-cis visualizations. For trans interactions, \Rpackage{Basic4Cseq} provides a wrapper for \Rpackage{RCircos} to produce basic Circos-plots of inter-chromosomal interactions. 
+
+<<label=transInteractions, eval=FALSE>>=
+  library("RCircos")
+  transInteractions <- system.file("extdata", "transInteractionData.txt", package="Basic4Cseq")
+  ideogramData <- system.file("extdata", "RCircos_GRCm38_ideogram.csv", package="Basic4Cseq")
+  plotTransInteractions(transInteractions, "10", c(20000100, 20001000), ideogramData, PlotColor = "blue", expandBands = TRUE, expansionValue = 1000000, plotFileName = "")
+@
+
+
+\section{Optional functionality}
+
+\subsection{Controlling the restriction enzyme sequence of reads in SAM files}
+\Rpackage{Basic4Cseq} offers further filter functions for a SAM file with reads where the first restriction enzyme sequence has not been trimmed. The first bases of a read (i.e. the position of the first restriction enzyme sequence in a standard 4C-seq experiment; normally 4 or 6 bp long) are checked for mismatches. Reads with mismatches in the restriction enzyme sequence are deleted to remove reads that did not match perfectly to fragment ends, but overlap and distort the true signal. SAM and BAM files can easily be converted with the help of SAMtools.
+
+<<label=checkRestrictionEnzyme, eval=FALSE>>=
+  # The demonstration reads are taken from Stadhouders et al's data,
+  # but additional cutter sequences have been added manually for demonstration purposes
+  fetalLiverCutterFile <- system.file("extdata", "fetalLiverCutter.sam", package="Basic4Cseq")
+  checkRestrictionEnzymeSequence("aagctt", fetalLiverCutterFile, "fetalLiverCutter_filtered.sam")
+@
+
+\subsection{Extraction of BED files}
+BED files can be extracted from the fragment library for direct use with tools like the Integrative Genomics Viewer (IGV).
+
+<<label=extractBED, eval=FALSE>>=
+  printBEDFragmentLibrary(libraryFile, "BEDLibrary_FL_vp.bed")
+@
+
+\subsection{Restriction enzyme database}
+For convenience, a small database of restriction enzyme names and sequences has been added. The data was taken from van de Werken et al's database of restriction enzyme combinations \cite{vandeWerken01}. The function giveEnzymeSequence loads this database (a tab-separated file that can be expanded or replaced as necessary) and returns the corresponding enzyme sequence for a given enzyme name.
+
+<<label=giveEnzymeSequence, eval=TRUE>>=
+  enzymeData <- system.file("extdata", "enzymeData.csv", package="Basic4Cseq")
+  giveEnzymeSequence(enzymeData, "NlaIII")
+@
+
+
+\subsection{Digestion simulation}
+\Rpackage{Basic4Cseq} can simulate the digestion process with two restriction enzymes for a dna sequence or a BSgenome package and simply count the resulting fragments. The resulting virtual library of fragment parts does not provide information on blind or non-blind fragments, but provides information on the fragment length distribution of the real (i.e. biological) 4C-seq library. In contrast to the regular virtual fragment library for 4C-seq data, fragments between two adjacent secondary restriction enzyme sites are counted as well. This information can then be used for quality controls of the biological fragment library. 
+
+The results of the example are shown in figure \ref{fig:03}.
+
+<<label=simulateDigestion, eval=TRUE>>=
+  shortTestGenome = "ATCCATGTAGGCTAAGTACACATGTTAAGGTACAGTACAATTGCACGATCAT"
+  fragments = simulateDigestion("catg", "gtac", shortTestGenome)
+  head(fragments)
+@
+
+<<label=drawDigestionFragmentHistogram, fig=TRUE, include=FALSE, eval=TRUE, PDF=TRUE>>=
+  # This command creates a histogram plot of virtual library fragment length and frequencies
+  drawDigestionFragmentHistogram(fragments)
+@
+
+\begin{figure}[h]
+  \includegraphics[width=10cm,height=10cm]{Basic4Cseq-drawDigestionFragmentHistogram}
+  \caption{Histogram plot of virtual library fragment length and frequencies. The underlying genome is a short example string.}
+  \label{fig:03}
+\end{figure}
+
+\subsection{BAM file filtering}
+\Rpackage{Basic4Cseq} offers a wrapper function for the alignment of FASTQ files and filtering of the resulting SAM / BAM files. \Rfunction{prepare4CseqData} relies on the availability of the external tools BWA, SAMtools, and BEDtools. A provided 4C-seq fastq file is read from hard disk, and the reads are aligned with BWA. The function \Rfunction{checkRestrictionEnzymeSequence} is used for optional filtering. Samtools and bedtools provide the necessary functionality for intersecting the filtered reads with a given 4C-seq fragment library for visualization purposes (e.g. with the Integrative Genomics Viewer, IGV).
+<<label=prepare4CseqData, eval=FALSE>>=
+    # BWA, samtools and bedtools must be installed
+    # It is assumed that the example data files (from the package) are in the active directory
+    prepare4CseqData("veryShortExample.fastq", "CATG", "veryShortLib.csv", referenceGenome = "veryShortReference.fasta")
+@
+
+
+
+
+\begin{thebibliography}{}
+
+\bibitem[Stadhouders {\it et al}., 2012]{Stadhouders01} Stadhouders, R., Thongjuea, S., {\it et al} (2012) Dynamic long-range chromatin interactions control Myb proto-oncogene transcription during erythroid development., {\it EMBO}, {\bf 31}, 986-999.
+
+\bibitem[van de Werken {\it et al}., 2012]{vandeWerken01} van de Werken, H., Landan, G., Holwerda, S., et al. (2012) Robust 4C-seq data analysis to screen for regulatory DNA interactions, {\it Nature Methods}, {\bf 9}, 969-971.
+\bibitem[Gheldof {\it et al}., 2012]{Gheldof01} Gheldof, N., Leleu, M., Noordermeer, D., et al. (2012) Detecting Long-Range Chromatin Interactions Using the Chromosome Conformation Capture Sequencing (4C-seq) Method, {\it Methods in Molecular Biology}, {\bf 786}, 212-225.
+\bibitem[van de Werken {\it et al}., 2012]{vandeWerken02} van de Werken, H., de Vree, P., Splinter, E., et al. (2012) 4C technology: protocols and data analysis, {\it Methods Enzymology}, {\bf 513}, 89-112.
+\bibitem[Splinter {\it et al}., 2012]{Splinter01} Splinter, E., de Wit, E., van de Werken, H., et al. (2012) Determining long-range chromatin interactions for selected genomic sites using 4C-seq technology: From fixation to computation, {\it Methods}, {\bf 58}, 221-230.
+\bibitem[Li {\it et al}., 2009]{Li01} Li, H. and Durbin, R. (2009) Fast and accurate short read alignment with Burrows-Wheeler Transform, {\it Bioinformatics}, {\bf 25}, 1754-60.
+\bibitem[Li {\it et al}., 2009]{Li02} Li, H., Handssaker, B, Wysoker, A. et al. (2009) The Sequence alignment/map (SAM) format and SAMtools, {\it Bioinformatics}, {\bf 25}, 2078-9.
+\bibitem[Quinlan {\it et al}., 2010]{Quinlan01} Quinlan, A. and Hall, I. (2010) BEDTools: a flexible suite of utilities for comparing genomic features, {\it Bioinformatics}, {\bf 26}, 841-2.
+\end{thebibliography}
+
+
+\section{Session Information}
+<<sessionInfo, echo=FALSE>>=
+sessionInfo()
+@
+
+\end{document}

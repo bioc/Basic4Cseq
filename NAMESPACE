@@ -1,0 +1,45 @@
+import(methods)
+import(Biostrings)
+import(ShortRead)
+import(caTools)
+import(BSgenome.Ecoli.NCBI.20080805)
+import(RCircos)
+import(GenomicRanges)
+
+
+exportClasses(
+  Data4Cseq)
+
+exportMethods(
+  prepare4CseqData,
+  createVirtualFragmentLibrary,
+  printBEDFragmentLibrary,
+  checkRestrictionEnzymeSequence,
+  giveEnzymeSequence,
+  readPointsOfInterestFile,
+ 
+  readsToFragments,
+  chooseNearCisFragments,
+  normalizeFragmentData,
+  getReadDistribution,
+  visualizeViewpoint,
+  drawHeatmap,
+
+  exportVisualizationFragmentData,
+  importVisualizationFragmentData,
+  printWigFile,
+  simulateDigestion,
+  drawDigestionFragmentHistogram,
+  plotTransInteractions,
+
+  Data4Cseq,
+  viewpointChromosome, "viewpointChromosome<-",
+  viewpointInterval, "viewpointInterval<-",
+  readLength, "readLength<-",
+  pointsOfInterest, "pointsOfInterest<-",
+  rawReads, "rawReads<-",
+  rawFragments, "rawFragments<-",
+  nearCisFragments, "nearCisFragments<-"
+)
+
+
