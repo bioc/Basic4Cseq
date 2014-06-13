@@ -6,7 +6,7 @@
 
 \title{Create a virtual fragment library from a provided genome and two restriction enzymes}
 
-\description{\pkg{Basic4Cseq} can create virtual fragment libraries from any BSgenome package. Two restriction enzymes have to be specified to cut the DNA, the read length is needed to check the fragment ends of corresponding length for uniqueness. Filter options (minimum and maximum size) are provided on fragment level and on fragment end level.}
+\description{\pkg{Basic4Cseq} can create virtual fragment libraries from any BSgenome package or DNAString object. Two restriction enzymes have to be specified to cut the DNA, the read length is needed to check the fragment ends of corresponding length for uniqueness. Filter options (minimum and maximum size) are provided on fragment level and on fragment end level.}
 
 \usage{
 createVirtualFragmentLibrary(chosenGenome, firstCutter, secondCutter, readLength, onlyNonBlind = TRUE, useOnlyIndex = TRUE, minSize = 0, maxSize = -1, minFragEndSize = 0, maxFragEndSize = 10000000, useAllData = TRUE, chromosomeName = "chr1", libraryName = "default")

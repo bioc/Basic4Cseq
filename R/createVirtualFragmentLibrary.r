@@ -94,9 +94,22 @@
   secondCutterPresent[1] = FALSE
   secondCutterPresent[length(secondCutterPresent)] = FALSE
 
+  emptyLastFrag = FALSE
+  
+  if (length(fragmentEnd) > length(secondCutterPresent)) {
+    secondCutterPresent = c(secondCutterPresent, FALSE)
+    fragmentSequences = c(fragmentSequences, "")
+    emptyLastFrag = TRUE
+  }
+
   # fragments total
   fragmentTable = data.frame(chromosomeName, fragmentStart, fragmentEnd, secondCutterPresent, fragmentSequences)
   fragmentTable[,5] = as.vector(fragmentTable[,5])
+  
+  # delete possible empty fragment if cutter sequence is at the end of the genome
+  if (emptyLastFrag) {
+    fragmentTable = fragmentTable[-nrow(fragmentTable),]
+  }
   
   secondCutterPos = gregexpr(toupper(secondCutter), fragmentTable[,5])
   secondCutterFirst = NULL
