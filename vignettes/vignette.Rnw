@@ -91,6 +91,8 @@ Optional functions include:\\
   \item \Rfunction{simulateDigestion}: Simulated digestion of a genome with two restriction enzymes, assuming full enzyme efficiency, and without consideration of fragment types or filtering options
 \end{itemize}
 
+In addition to the examples presented in this vignette, more detailed information on the functions' parameters and additional examples are presented in the corresponding manual pages.
+
 
 \section{Data preparation and bioinformatics software}
 The main input format for \Rpackage{Basic4Cseq}'s main functions is the binary alignment / map (BAM) format. Virtually any alignment software can be used to map the raw experimental data to the corresponding reference genome. However, BWA is suggested for both its speed and its direct control over the number of allowed mismatches. Optional filtering steps use SAMtools and BEDtools to remove invalid reads in the BAM file.
@@ -107,7 +109,8 @@ We demonstrate the process on a short example string:
 
 <<label=createVirtualFragmentLibrary, eval=TRUE>>=
 testGenome = DNAString("ATCATGAAGTACTACATGGCACCATGT")
-fragmentData = createVirtualFragmentLibrary(chosenGenome = testGenome, firstCutter = "catg", secondCutter = "gtac", readLength = 2,  chromosomeName = "test", libraryName = "")
+fragmentData = createVirtualFragmentLibrary(chosenGenome = testGenome, firstCutter = "catg", 
+	secondCutter = "gtac", readLength = 2,  chromosomeName = "test", libraryName = "")
 head(fragmentData)
 @
 
@@ -116,7 +119,8 @@ The function splits a given genome (or chromosome) at the provided primary restr
 The virtual fragment library for the fetal liver data can be created in a similar way. The time needed for the creation of the library is proportional to the length of the genome, so computing a library for longer genomes takes time.
 <<label=l2, eval=FALSE>>=
 library(BSgenome.Mmusculus.UCSC.mm9)
-createVirtualFragmentLibrary(chosenGenome = Mmusculus, firstCutter = "aagctt", secondCutter = "catg", readLength = 54,  libraryName = "myFullFetalLiverVFL.csv")
+createVirtualFragmentLibrary(chosenGenome = Mmusculus, firstCutter = "aagctt", secondCutter = 
+	"catg", readLength = 54,  libraryName = "myFullFetalLiverVFL.csv")
 @
 
 For the following analysis, we therefore import both a prepared virtual fragment library and the raw read data:
@@ -142,7 +146,8 @@ The fragment library is central for the analysis of 4C-seq data, but some meta d
 With a virtual fragment library, reads and meta data at our disposal, we can now create a Data4Cseq object. 
 
 <<label=initializeObject, eval=TRUE>>=
-liverData = Data4Cseq(viewpointChromosome = "10", viewpointInterval = c(20879870, 20882209), readLength = 54, pointsOfInterest = liverPoints, rawReads = liverReads)
+liverData = Data4Cseq(viewpointChromosome = "10", viewpointInterval = c(20879870, 20882209), 
+	readLength = 54, pointsOfInterest = liverPoints, rawReads = liverReads)
 liverData
 @
 
@@ -154,13 +159,17 @@ The reads are then mapped to the predefined fragment library:
   liverData
 @
 
+The function expects the provided reads and the provided fragment library to match. If just a partial fragment library is used, it is recommended to remove reads outside the chosen regions with external tools like the BEDTools program suite.
+
+
 
 \subsection{Filtering and normalization}
 For near-cis visualizations, all data on chromosomes that do not contain the viewpoint are irrelevant. While it is possible to visualize the whole viewpoint chromosome as "near-cis" plot, the visibility of peaks around the viewpoint is increased dramatically if the visualization region is restricted to this area. Since \Rpackage{Basic4Cseq} focuses on the creation of near-cis plots (in contrast to far-cis interactions), we pick a region around the experiment's viewpoint for visualization. Fragments adjacent to the viewpoint are per default removed to prevent bias through overrepresented sequences caused by self-ligation. 
 
 <<label=initializeObject, eval=TRUE>>=
   # pick near-cis fragments
-  nearCisFragments(liverData)<-chooseNearCisFragments(liverData, regionCoordinates = c(20800000, 21100000))
+  nearCisFragments(liverData)<-chooseNearCisFragments(liverData, 
+	regionCoordinates = c(20800000, 21100000))
   head(nearCisFragments(liverData))
 @
 
@@ -174,7 +183,8 @@ The raw read count can then be RPM-normalized to allow for better comparability 
 
 
 \subsection{Quality control}
-The distribution of reads throughout the genome provides information on the quality of the 4C-seq experiment data. \Rpackage{Basic4Cseq} provides the following quality statistics: the number of total reads, cis to overall ratio of reads, and the percentage of covered fragment ends within a certain distance around the experiment's viewpoint. Reference values for high-quality experiments, as provided by van de Werken et al \cite{vandeWerken02}, are more than one million reads total, a cis to overall ratio of more than 40\% and a large fraction of covered fragment ends in the viewpoint's vicinity
+The distribution of reads throughout the genome provides information on the quality of the 4C-seq experiment data. \Rpackage{Basic4Cseq} provides the following quality statistics: the number of total reads, cis to overall ratio of reads, and the percentage of covered fragment ends within a certain distance around the experiment's viewpoint. Reference values for high-quality experiments, as provided by van de Werken et al \cite{vandeWerken02}, are more than one million reads total, a cis to overall ratio of more than 40\% and a large fraction of covered fragment ends in the viewpoint's vicinity. The region around the viewpoint which is to be checked can be customized; van de Werken et al recommend 2 Mb total for 6 bp cutters and 0.2 Mb total for 4 bp cutters. Since this value can be considered to be quite small, an alternative recommendation would be to use at least a window of 0.5 Mb in total for 4 bp cutters. The parameter "distanceFromVP" allows the use of custom regions.
+
 
 <<label=qualityControl, eval=TRUE>>=
   getReadDistribution(liverData, useFragEnds = TRUE, outputName = "")
@@ -189,11 +199,15 @@ The statistics can be exported as a standard text file, or printed on screen if 
 
 \Rpackage{Basic4Cseq} offers two visualization routines for near-cis interactions, a coverage plot and an additional multi-scale contact intensity profile in a domainogram- or heatmap-like format. Both plots can be exported as PDF or TIFF file, the format is automatically chosen according to the file name. If no file name is provided, the plot is printed on screen. Pre-defined regions of interest can be marked in both plots. Fragment end data can be used directly, or the values can be interpolated on fragment level.
 
-The visualization strategy for the coverage plot is similar to van de Werken et al \cite{vandeWerken01}: Fragment data is smoothed via a running median or running mean approach with a specified window size. Quantiles (per default 20\%, 50\% and 80\%) are further smoothed with R's loess function. The viewpoint region itself can be excluded from the visualization to stop overrepresented sequences (most likely caused by self-ligation) from distorting the picture. \Rfunction{visualizeViewpoint} expects a \Rclass{Data4Cseq} instance to visualize, but an alternative input of a custom data frame ("chrom", "start", "end", "reads") that contains both position and (normalized) read count of the fragment data to visualize is possible as well. The results of the example are shown in figure \ref{fig:01}.
+The visualization strategy for the coverage plot is similar to van de Werken et al \cite{vandeWerken01}: Fragment data is smoothed via a running median or running mean approach with a specified window size. Quantiles (per default 20\%, 50\% and 80\%) are further smoothed and interpolated with R's loess function. The interpolation effect offered by the loess function helps to make the data profile visible.
+
+The viewpoint region itself can be excluded from the visualization to stop overrepresented sequences (most likely caused by self-ligation) from distorting the picture. \Rfunction{visualizeViewpoint} expects a \Rclass{Data4Cseq} instance to visualize, but an alternative input of a custom data frame ("chrom", "start", "end", "reads") that contains both position and (normalized) read count of the fragment data to visualize is possible as well. The results of the example are shown in figure \ref{fig:01}.
 
 <<label=visualizeViewpoint, fig=TRUE, include=FALSE, eval=FALSE, PDF=TRUE>>=
   # This command creates a near-cis plot of the fetal liver's viewpoint data
-  visualizeViewpoint(liverData, plotFileName = "", mainColour = "blue", plotTitle = "Fetal Liver Near-Cis Plot", loessSpan = 0.1, maxY = 6000, xAxisIntervalLength = 50000, yAxisIntervalLength = 1000)
+  visualizeViewpoint(liverData, plotFileName = "", mainColour = "blue", 
+	plotTitle = "Fetal Liver Near-Cis Plot", loessSpan = 0.1, maxY = 6000, 
+	xAxisIntervalLength = 50000, yAxisIntervalLength = 1000)
 @
 
 \begin{figure}[h]
@@ -231,7 +245,8 @@ Splinter et al's spider plots already offer a way to create far-cis visualizatio
   library("RCircos")
   transInteractions <- system.file("extdata", "transInteractionData.txt", package="Basic4Cseq")
   ideogramData <- system.file("extdata", "RCircos_GRCm38_ideogram.csv", package="Basic4Cseq")
-  plotTransInteractions(transInteractions, "10", c(20000100, 20001000), ideogramData, PlotColor = "blue", expandBands = TRUE, expansionValue = 1000000, plotFileName = "")
+  plotTransInteractions(transInteractions, "10", c(20000100, 20001000), ideogramData, 
+	PlotColor = "blue", expandBands = TRUE, expansionValue = 1000000, plotFileName = "")
 @
 
 
@@ -290,7 +305,8 @@ The results of the example are shown in figure \ref{fig:03}.
 <<label=prepare4CseqData, eval=FALSE>>=
     # BWA, samtools and bedtools must be installed
     # It is assumed that the example data files (from the package) are in the active directory
-    prepare4CseqData("veryShortExample.fastq", "CATG", "veryShortLib.csv", referenceGenome = "veryShortReference.fasta")
+    prepare4CseqData("veryShortExample.fastq", "CATG", "veryShortLib.csv", 
+	referenceGenome = "veryShortReference.fasta")
 @
 
 
