@@ -25,8 +25,14 @@
 
       # add zeroes if last fragment is not covered
       tempPlus = fragmentTable[nrow(fragmentTable),3] - length(baseCovPlus)
+      if (tempPlus < 0) {
+        tempPlus = 0
+      }
       baseCovPlus = c(baseCovPlus,  rep(0, times=tempPlus))
       tempMinus = fragmentTable[nrow(fragmentTable),3] - length(baseCovMinus)
+      if (tempMinus < 0) {
+        tempMinus = 0
+      }
       baseCovMinus = c(baseCovMinus,  rep(0, times=tempMinus))
 
       # calculate read count for fragment start, end, and average
