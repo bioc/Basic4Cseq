@@ -9,7 +9,7 @@
 }
 
 \description{
-  This data set contains an instance of a \code{Data4Cseq} object; 2175 reads on 453 fragments are included. Raw reads are mapped to fragments, but the read count has not yet been normalized.
+  This data set contains an instance of a \code{Data4Cseq} object; 2185 reads on 453 fragments are included. Raw reads are mapped to fragments, but the read count has not yet been normalized.
   
   The 4C-seq data was taken from Stadhouders et al's fetal liver data set.
 }

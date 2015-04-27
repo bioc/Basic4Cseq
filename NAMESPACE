@@ -1,6 +1,6 @@
 import(methods)
 import(Biostrings)
-import(ShortRead)
+import(GenomicAlignments)
 import(caTools)
 import(BSgenome.Ecoli.NCBI.20080805)
 import(RCircos)

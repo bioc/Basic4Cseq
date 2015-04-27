@@ -9,7 +9,7 @@
 }
 
 \description{
-  This data set contains an instance of a \code{Data4Cseq} object; 2175 reads on 453 fragments are included.
+  This data set contains an instance of a \code{Data4Cseq} object; 2185 reads on 453 fragments are included.
   
   The 4C-seq data was taken from Stadhouders et al's fetal liver data set.
 }

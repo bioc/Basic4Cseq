@@ -21,7 +21,7 @@
 \alias{rawReads}
 \alias{rawReads,Data4Cseq-method}
 \alias{rawReads<-}
-\alias{rawReads<-,Data4Cseq,AlignedRead-method}
+\alias{rawReads<-,Data4Cseq,GAlignments-method}
 \alias{rawFragments}
 \alias{rawFragments,Data4Cseq-method}
 \alias{rawFragments<-}
@@ -46,7 +46,7 @@ Objects can be created by calls of the form \code{new("Data4Cseq", ...)}.
     \item{\code{viewpointInterval}:}{Object of class \code{"numeric"} representing the viewpoint interval's location}
     \item{\code{readLength}:}{Object of class \code{"numeric"} representing the experiment's read length}
     \item{\code{pointsOfInterest}:}{Object of class \code{"data.frame"} representing any points of interest to be marked in the near-cis visualizations}
-    \item{\code{rawReads}:}{Object of class \code{"AlignedRead"} representing the raw 4C-seq reads of the experiment}
+    \item{\code{rawReads}:}{Object of class \code{"GAlignments"} representing the raw 4C-seq reads of the experiment}
     \item{\code{rawFragments}:}{Object of class \code{"data.frame"} representing the experiment's corresponding virtual fragment library}
     \item{\code{nearCisFragments}:}{Object of class \code{"data.frame"} representing near-cis data in fragment form}
   }
@@ -70,7 +70,7 @@ Objects can be created by calls of the form \code{new("Data4Cseq", ...)}.
       Setter-method for the pointsOfInterest slot.}
     \item{pointsOfInterest}{\code{signature(object = "Data4Cseq")}: 
       Getter-method for the pointsOfInterest slot.}
-    \item{rawReads<-}{\code{signature(object = "Data4Cseq", value = "AlignedRead")}: 
+    \item{rawReads<-}{\code{signature(object = "Data4Cseq", value = "GAlignments")}: 
       Setter-method for the rawReads slot.}
     \item{rawReads}{\code{signature(object = "Data4Cseq")}: 
       Getter-method for the rawReads slot.}

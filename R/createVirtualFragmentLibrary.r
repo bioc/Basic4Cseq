@@ -1,4 +1,4 @@
-.createVirtualFragmentLibrary_BSgenome <- function(chosenGenome, firstCutter, secondCutter, readLength, onlyNonBlind = TRUE, useOnlyIndex = TRUE, minSize = 0, maxSize = -1, minFragEndSize = 0, maxFragEndSize = 10000000, useAllData = TRUE, chromosomeName = "chr1", libraryName = "default") {
+.createVirtualFragmentLibrary_BSgenome <- function(chosenGenome, firstCutter, secondCutter, readLength, onlyNonBlind = TRUE, useOnlyIndex = FALSE, minSize = 0, maxSize = -1, minFragEndSize = 0, maxFragEndSize = 10000000, useAllData = TRUE, chromosomeName = "chr1", libraryName = "default") {
 
   chromosomeNames = seqnames(chosenGenome)
     
@@ -46,7 +46,7 @@
 }
 
 
-.createVirtualFragmentLibrary_DNAString <- function(chosenGenome, firstCutter, secondCutter, readLength, onlyNonBlind = TRUE, useOnlyIndex = TRUE, minSize = 0, maxSize = -1, minFragEndSize = 0, maxFragEndSize = 10000000, useAllData = TRUE, chromosomeName = "chr1", libraryName = "default") {
+.createVirtualFragmentLibrary_DNAString <- function(chosenGenome, firstCutter, secondCutter, readLength, onlyNonBlind = TRUE, useOnlyIndex = FALSE, minSize = 0, maxSize = -1, minFragEndSize = 0, maxFragEndSize = 10000000, useAllData = TRUE, chromosomeName = "chr1", libraryName = "default") {
 
   totalFragments = NULL
   totalFragmentsRev = NULL
@@ -128,7 +128,7 @@
 }
 
 
-.createVirtualFragmentLibraryMain <- function(totalFragments, totalFragmentsRev, firstCutter, secondCutter, readLength, onlyNonBlind = TRUE, useOnlyIndex = TRUE, minSize = 0, maxSize = -1, minFragEndSize = 0, maxFragEndSize = 10000000, chromosomeName = "chr1", libraryName = "default") {
+.createVirtualFragmentLibraryMain <- function(totalFragments, totalFragmentsRev, firstCutter, secondCutter, readLength, onlyNonBlind = TRUE, useOnlyIndex = FALSE, minSize = 0, maxSize = -1, minFragEndSize = 0, maxFragEndSize = 10000000, chromosomeName = "chr1", libraryName = "default") {
 
   # if necessary, change chromosome name from "chr1"..."chrY" to "1"..."Y"
   if (useOnlyIndex) {

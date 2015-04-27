@@ -9,7 +9,7 @@
 \description{\pkg{Basic4Cseq} can create virtual fragment libraries from any BSgenome package or DNAString object. Two restriction enzymes have to be specified to cut the DNA, the read length is needed to check the fragment ends of corresponding length for uniqueness. Filter options (minimum and maximum size) are provided on fragment level and on fragment end level.}
 
 \usage{
-createVirtualFragmentLibrary(chosenGenome, firstCutter, secondCutter, readLength, onlyNonBlind = TRUE, useOnlyIndex = TRUE, minSize = 0, maxSize = -1, minFragEndSize = 0, maxFragEndSize = 10000000, useAllData = TRUE, chromosomeName = "chr1", libraryName = "default")
+createVirtualFragmentLibrary(chosenGenome, firstCutter, secondCutter, readLength, onlyNonBlind = TRUE, useOnlyIndex = FALSE, minSize = 0, maxSize = -1, minFragEndSize = 0, maxFragEndSize = 10000000, useAllData = TRUE, chromosomeName = "chr1", libraryName = "default")
 }
 
 \arguments{
@@ -18,7 +18,7 @@ createVirtualFragmentLibrary(chosenGenome, firstCutter, secondCutter, readLength
  \item{secondCutter}{Second of two restriction enzymes}
  \item{readLength}{Read length for the experiment}
  \item{onlyNonBlind}{Variable that is TRUE (default) if only non-blind fragments are considered (i.e. all blind fragments are removed)}
- \item{useOnlyIndex}{Convenience function to adapt the annotation style of the chromosomes ("chr1", \dots "chrY" or "1", \dots, "Y"); parameter depends on personal preferences}
+ \item{useOnlyIndex}{Convenience function to adapt the annotation style of the chromosomes ("chr1", \dots "chrY" or "1", \dots, "Y"); parameter has to be set to match the BAM file in question}
  \item{minSize}{Filter option that allows to delete fragments below a certain size (in bp)}
  \item{maxSize}{Filter option that allows to delete fragments above a certain size (in bp)}
  \item{minFragEndSize}{Filter option that allows to delete fragment ends below a certain size (in bp)}

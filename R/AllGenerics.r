@@ -16,7 +16,7 @@ setGeneric("printBEDFragmentLibrary", signature=c("fragmentLibrary", "BEDLibrary
         standardGeneric("printBEDFragmentLibrary"))
 
 setGeneric("printWigFile", signature=c("expData"),
-    function(expData, wigFileName = "output.wig", fixedSpan = TRUE, headerUCSC = "", useOnlyIndex = TRUE)
+    function(expData, wigFileName = "output.wig", fixedSpan = TRUE, headerUCSC = "", useOnlyIndex = FALSE)
         standardGeneric("printWigFile"))
 
 setGeneric("giveWigDataChromosome", signature=c("fragmentDataChromosome", "readLength", "chromosomeID"),
@@ -104,7 +104,7 @@ setGeneric("checkRestrictionEnzymeSequence", signature=c("firstCutter", "inputFi
 
 # generics for fragment library creation
 setGeneric("createVirtualFragmentLibrary", signature=c("chosenGenome", "firstCutter", "secondCutter", "readLength"),
-    function(chosenGenome, firstCutter, secondCutter, readLength, onlyNonBlind = TRUE, useOnlyIndex = TRUE, minSize = 0, maxSize = -1, minFragEndSize = 0, maxFragEndSize = 10000000, useAllData = TRUE, chromosomeName = "chr1", libraryName = "default")
+    function(chosenGenome, firstCutter, secondCutter, readLength, onlyNonBlind = TRUE, useOnlyIndex = FALSE, minSize = 0, maxSize = -1, minFragEndSize = 0, maxFragEndSize = 10000000, useAllData = TRUE, chromosomeName = "chr1", libraryName = "default")
         standardGeneric("createVirtualFragmentLibrary"))
 
 setGeneric("splitChromosome", signature=c("firstCutter", "secondCutter", "chromosomeToSplit", "chromosomeName"),
@@ -112,7 +112,7 @@ setGeneric("splitChromosome", signature=c("firstCutter", "secondCutter", "chromo
         standardGeneric("splitChromosome"))
 
 setGeneric("createVirtualFragmentLibraryMain", signature=c("totalFragments", "totalFragmentsRev", "firstCutter", "secondCutter", "readLength"),
-    function(totalFragments, totalFragmentsRev, firstCutter, secondCutter, readLength, onlyNonBlind = TRUE, useOnlyIndex = TRUE, minSize = 0, maxSize = -1, minFragEndSize = 0, maxFragEndSize = 10000000, chromosomeName = "chr1", libraryName = "default")
+    function(totalFragments, totalFragmentsRev, firstCutter, secondCutter, readLength, onlyNonBlind = TRUE, useOnlyIndex = FALSE, minSize = 0, maxSize = -1, minFragEndSize = 0, maxFragEndSize = 10000000, chromosomeName = "chr1", libraryName = "default")
         standardGeneric("createVirtualFragmentLibraryMain"))
 
 

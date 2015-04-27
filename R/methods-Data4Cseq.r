@@ -1,6 +1,6 @@
 # constructor for class "Data4Cseq"
 
-setMethod("Data4Cseq", signature(viewpointChromosome="character", viewpointInterval="numeric", readLength="numeric", pointsOfInterest="data.frame", rawReads="AlignedRead"),
+setMethod("Data4Cseq", signature(viewpointChromosome="character", viewpointInterval="numeric", readLength="numeric", pointsOfInterest="data.frame", rawReads="GAlignments"),
     function(viewpointChromosome, viewpointInterval, readLength, pointsOfInterest, rawReads) {
         
       for (i in 1:nrow(pointsOfInterest)) {
@@ -128,7 +128,7 @@ setMethod("rawReads", signature(object="Data4Cseq"),
 )
 
 setReplaceMethod("rawReads",
-    signature=signature(object="Data4Cseq", value="AlignedRead"),
+    signature=signature(object="Data4Cseq", value="GAlignments"),
     function(object, value) {
         object@rawReads = value
         return(object)

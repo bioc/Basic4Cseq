@@ -68,7 +68,7 @@ into the R console. \\
 
 \subsection{Provided functionality}
 
-\Rpackage{Basic4Cseq} requires the R-packages \Rpackage{ShortRead}, \Rpackage{Biostrings}, \Rpackage{caTools}, and \Rpackage{GenomicRanges}. While the package \Rpackage{BSgenome.Ecoli.NCBI.20080805} is used for example purposes, the package \Rpackage{BSgenome.Hsapiens.UCSC.hg19} or any respective corresponding BSgenome package (e.g. for Mus musculus) is suggested for the analysis of real 4C-seq data. Optional visualization of imported long-range interaction intervals requires the package \Rpackage{RCircos}. 
+\Rpackage{Basic4Cseq} requires the R-packages \Rpackage{GenomicAlignments}, \Rpackage{Biostrings}, \Rpackage{caTools}, and \Rpackage{GenomicRanges}. While the package \Rpackage{BSgenome.Ecoli.NCBI.20080805} is used for example purposes, the package \Rpackage{BSgenome.Hsapiens.UCSC.hg19} or any respective corresponding BSgenome package (e.g. for Mus musculus) is suggested for the analysis of real 4C-seq data. Optional visualization of imported long-range interaction intervals requires the package \Rpackage{RCircos}. 
 
 This package provides the following basic functions for the analysis of 4C-seq data: \\
 \begin{itemize}
@@ -104,6 +104,8 @@ A virtual fragment library is required for the analysis of 4C-seq data. This lib
 \Rpackage{Basic4Cseq} offers functions for basic filtering, analysis and subsequent visualization of 4C-seq data. Fetal liver data of \cite{Stadhouders01} is included in this package to demonstrate its functionality. Only a fraction of the original reads are included due to space limits and to speed up the analysis.
 
 \subsection{Creation of a fragment library}
+Before creating a virtual fragment library for a custom analysis, it is essential to check the format of the BAM files. Depending on the reference genome's annotation, the chromosome identifier can either be written with or without "chr", e.g. "chr1", "chr2" etc. or "1", "2" etc. The parameter "useOnlyIndex" of \Rpackage{Basic4Cseq}'s function \Rfunction{createVirtualFragmentLibrary} is used to adapt one's personal libraries according to this style. Per default, "chr" is added, but if one uses a "no-chr-BAM", then useOnlyIndex has to be set to TRUE for \Rpackage{Basic4Cseq} to work.
+
 While the virtual fragment library needed for the analysis of Stadhouders et al's fetal liver data is already included in \Rpackage{Basic4Cseq}, the creation of the corresponding library is usually the first step for the analysis of 4C-seq data. 
 We demonstrate the process on a short example string:
 
@@ -125,10 +127,10 @@ createVirtualFragmentLibrary(chosenGenome = Mmusculus, firstCutter = "aagctt", s
 
 For the following analysis, we therefore import both a prepared virtual fragment library and the raw read data:
 <<label=loadFetalLiverRawData, eval=TRUE>>=
-  library(ShortRead)
+  library(GenomicAlignments)
   libraryFile <- system.file("extdata", "vfl_aagctt_catg_mm9_54_vp.csv", package="Basic4Cseq")
   bamFile <- system.file("extdata", "fetalLiverShort.bam", package="Basic4Cseq")
-  liverReads <- readAligned(bamFile, type = "BAM")
+  liverReads <- readGAlignments(bamFile)
   liverReads
 @
 

@@ -2,7 +2,7 @@
 
   readsTotal = rawReads(expData)
   # check all chromosomes where reads are present
-  chromosomeNames = as.vector(unique(chromosome(readsTotal)))
+  chromosomeNames = unique(as.vector(seqnames(readsTotal)))
 
   # read fragment data (with  meta data, like uniqueness of frag-ends + second cutter site)
   fragmentTableTotal = read.table(fragmentLib, header = TRUE)
@@ -11,7 +11,7 @@
   
   for (i in 1:length(chromosomeNames)) {
 
-    reads = subset(readsTotal, chromosome(readsTotal) == chromosomeNames[i])
+    reads = subset(readsTotal, seqnames(readsTotal) == chromosomeNames[i])
 
     readsPlus = subset(reads, strand(reads) == "+")
     readsMinus = subset(reads, strand(reads) == "-")

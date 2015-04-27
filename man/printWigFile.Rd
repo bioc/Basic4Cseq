@@ -11,7 +11,7 @@ This function provides wig files from filtered fragment data. Only reads on uniq
 While some tools (e.g. the Integrative Genomics Viewer, IGV) accept 'raw' wig data, the UCSC browser needs a header line for correct visualizations. A basic header line has the form 'track type=wiggle_0', but may also contain information on the track's name and a short description. Since the header line may complicate possible downstream analysis of the wig files, no header is included per default.   
 }
 
-\usage{printWigFile(expData, wigFileName = "output.wig", fixedSpan = TRUE, headerUCSC = "", useOnlyIndex = TRUE)
+\usage{printWigFile(expData, wigFileName = "output.wig", fixedSpan = TRUE, headerUCSC = "", useOnlyIndex = FALSE)
 }
 
 \arguments{

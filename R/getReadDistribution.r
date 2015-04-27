@@ -8,16 +8,16 @@
   vpAreaFragments <- formatFragmentData(vpAreaFragments, useFragEnds)
   
   # filter invalid reads
-  readsTotal = subset(rawReads(expData), !(is.na(position(rawReads(expData)))))
+  readsTotal = subset(rawReads(expData), !(is.na(start(rawReads(expData)))))
 
   # get cis reads
-  readsVPChrom = subset(readsTotal, chromosome(readsTotal) == viewpointChromosome(expData))
+  readsVPChrom = subset(readsTotal, seqnames(readsTotal) == viewpointChromosome(expData))
 
   # prepare region for viewpoint region read control
   maxLeft = coordinatesVP[1] - distanceFromVP
   maxRight = coordinatesVP[2] + distanceFromVP
 
-  readsVPRegion = subset(readsVPChrom, position(readsVPChrom) >= maxLeft & position(readsVPChrom) <= maxRight)
+  readsVPRegion = subset(readsVPChrom, start(readsVPChrom) >= maxLeft & end(readsVPChrom) <= maxRight)
 
   percentageChrom = round(length(readsVPChrom) / length(readsTotal) * 100, digits = 2)
   percentageVP = round(length(readsVPRegion) / length(readsTotal) * 100, digits = 2)

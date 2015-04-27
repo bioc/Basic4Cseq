@@ -1,7 +1,7 @@
 \name{Data4Cseq}
 
 \alias{Data4Cseq}
-\alias{Data4Cseq,character,numeric,numeric,data.frame,AlignedRead-method}
+\alias{Data4Cseq,character,numeric,numeric,data.frame,GAlignments-method}
 \alias{Data4Cseq,character,numeric,numeric,missing,missing-method}
 
 
@@ -18,7 +18,7 @@
   \item{viewpointInterval}{The interval of the experiment's viewpoint, consisting of a start and end coordinate}
   \item{readLength}{The experiment's read length (in base pairs)}
   \item{pointsOfInterest}{Points of interest to be marked in a near-cis visualization}
-  \item{rawReads}{Reads of the 4C-seq experiment, aligned and stored as an \code{AlignedRead} object}
+  \item{rawReads}{Reads of the 4C-seq experiment, aligned and stored as an \code{GAlignments} object}
 }
 
 \details{
@@ -42,7 +42,7 @@ Fragments at the experiment's viewpoint are usually vastly overrepresented due t
 
   # create a Data4Cseq object, including possible points of interest and raw reads 
   bamFile <- system.file("extdata", "fetalLiverShort.bam", package="Basic4Cseq")
-  liverReads <- readAligned(bamFile, type = "BAM")
+  liverReads <- readGAlignments(bamFile)
   pointsOfInterestFile <- system.file("extdata", "fetalLiverVP.bed", package="Basic4Cseq")
   liverData = Data4Cseq(viewpointChromosome = "10", viewpointInterval = c(20879870, 20882209), readLength = 54, pointsOfInterest = readPointsOfInterestFile(pointsOfInterestFile), rawReads = liverReads)
   liverData

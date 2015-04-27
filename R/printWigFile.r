@@ -1,4 +1,4 @@
-.printWigFile <- function(expData, wigFileName = "output.wig", fixedSpan = TRUE, headerUCSC = "", useOnlyIndex = TRUE) {
+.printWigFile <- function(expData, wigFileName = "output.wig", fixedSpan = TRUE, headerUCSC = "", useOnlyIndex = FALSE) {
   
   fragmentData = rawFragments(expData)
   chromosomes = unique(as.vector(fragmentData$chromosomeName))
