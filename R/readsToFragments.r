@@ -35,6 +35,10 @@
       }
       baseCovMinus = c(baseCovMinus,  rep(0, times=tempMinus))
 
+      if (fragmentTable$fragmentEnd[1] == 0) {
+        fragmentTable$fragmentEnd[1] = 1
+      }
+
       # calculate read count for fragment start, end, and average
       leftFragEndReads = baseCovPlus[fragmentTable$fragmentStart]
       rightFragEndReads = baseCovMinus[fragmentTable$fragmentEnd]
