@@ -15,11 +15,11 @@ While some tools (e.g. the Integrative Genomics Viewer, IGV) accept 'raw' wig da
 }
 
 \arguments{
-  \item{expData}{Experiment data of class \code{Data4Cseq} with information on the 4C-seq experiment}
-  \item{wigFileName}{Name of the wig file that is written to hard disk}
-  \item{fixedSpan}{If TRUE, use a fixed span for the wig file}
-  \item{headerUCSC}{A header line for the UCSC browser}
-  \item{useOnlyIndex}{If TRUE, use only '1,2,...Y' as chromosome names, if FALSE, use 'chr1,chr2...chrY'.}
+    \item{expData}{Experiment data of class \code{Data4Cseq} with information on the 4C-seq experiment}
+    \item{wigFileName}{Name of the wig file that is written to hard disk}
+    \item{fixedSpan}{If TRUE, use a fixed span for the wig file}
+    \item{headerUCSC}{A header line for the UCSC browser}
+    \item{useOnlyIndex}{If TRUE, use only '1,2,...Y' as chromosome names, if FALSE, use 'chr1,chr2...chrY'.}
 }
 
 \value{A wig file containing the experiment's reads}
@@ -31,10 +31,10 @@ http://genome.ucsc.edu/
 }
 
 \examples{
-  if(interactive()) {
-    data(liverData)
-    printWigFile(liverData, wigFileName = "fetalLiver.wig")
-  }
+    if(interactive()) {
+        data(liverData)
+        printWigFile(liverData, wigFileName = "fetalLiver.wig")
+    }
 }
 
 \author{Carolin Walter}

@@ -1,54 +1,54 @@
 .simulateDigestion_Character <- function(firstCutter, secondCutter, dnaSequence) {
 
-  fragmentSequencesFirstDigestion = unlist(strsplit(dnaSequence, split=toupper(firstCutter)))
-  fragmentSequencesSecondDigestion = unlist(strsplit(fragmentSequencesFirstDigestion, split=toupper(secondCutter)))
-  fragmentLengths = as.data.frame(table(nchar(fragmentSequencesSecondDigestion)))
-  colnames(fragmentLengths) = c("length", "frequency")
-  return(fragmentLengths)
+    fragmentSequencesFirstDigestion = unlist(strsplit(dnaSequence, split=toupper(firstCutter)))
+    fragmentSequencesSecondDigestion = unlist(strsplit(fragmentSequencesFirstDigestion, split=toupper(secondCutter)))
+    fragmentLengths = as.data.frame(table(nchar(fragmentSequencesSecondDigestion)))
+    colnames(fragmentLengths) = c("length", "frequency")
+    return(fragmentLengths)
 }
 
 
 .simulateDigestion_BSgenome <- function(firstCutter, secondCutter, dnaSequence) {
 
-  chromosomeNames = seqnames(dnaSequence)
-  totalFragments = NULL
+    chromosomeNames = seqnames(dnaSequence)
+    totalFragments = NULL
 
-  for (i in 1:length(chromosomeNames)) {
-    chromosomeToSplit = dnaSequence[[i]]
-    currentChromosomeFragments = simulateDigestionChromosome(firstCutter, secondCutter, chromosomeToSplit)
-    totalFragments = c(totalFragments, currentChromosomeFragments)
-  }
+    for (i in 1:length(chromosomeNames)) {
+        chromosomeToSplit = dnaSequence[[i]]
+        currentChromosomeFragments = simulateDigestionChromosome(firstCutter, secondCutter, chromosomeToSplit)
+        totalFragments = c(totalFragments, currentChromosomeFragments)
+    }
 
-  fragmentLengths = as.data.frame(table(nchar(totalFragments)))
-  colnames(fragmentLengths) = c("length", "frequency")
-  return(fragmentLengths)
+    fragmentLengths = as.data.frame(table(nchar(totalFragments)))
+    colnames(fragmentLengths) = c("length", "frequency")
+    return(fragmentLengths)
 }
 
 
 .simulateDigestionChromosome_MaskedDNAString <- function(firstCutter, secondCutter, dnaSequence) {
 
-  dnaSequence = toString(as(unmasked(dnaSequence), "Views"))
-  fragmentSequencesFirstDigestion = unlist(strsplit(dnaSequence, split=toupper(firstCutter)))
-  fragmentSequencesSecondDigestion = unlist(strsplit(fragmentSequencesFirstDigestion, split=toupper(secondCutter)))
+    dnaSequence = toString(as(unmasked(dnaSequence), "Views"))
+    fragmentSequencesFirstDigestion = unlist(strsplit(dnaSequence, split=toupper(firstCutter)))
+    fragmentSequencesSecondDigestion = unlist(strsplit(fragmentSequencesFirstDigestion, split=toupper(secondCutter)))
 
-  return(fragmentSequencesSecondDigestion)
+    return(fragmentSequencesSecondDigestion)
 }
 
 
 .simulateDigestionChromosome_DNAString <- function(firstCutter, secondCutter, dnaSequence) {
 
-  dnaSequence = toString(dnaSequence)
-  fragmentSequencesFirstDigestion = unlist(strsplit(dnaSequence, split=toupper(firstCutter)))
-  fragmentSequencesSecondDigestion = unlist(strsplit(fragmentSequencesFirstDigestion, split=toupper(secondCutter)))
+    dnaSequence = toString(dnaSequence)
+    fragmentSequencesFirstDigestion = unlist(strsplit(dnaSequence, split=toupper(firstCutter)))
+    fragmentSequencesSecondDigestion = unlist(strsplit(fragmentSequencesFirstDigestion, split=toupper(secondCutter)))
 
-  return(fragmentSequencesSecondDigestion)
+    return(fragmentSequencesSecondDigestion)
 }
 
 
 .drawDigestionFragmentHistogram <- function(fragments, minLength = 0, maxLength = 10000) {
 
-  fragmentData = subset(fragments, as.numeric(fragments$length) >= minLength & as.numeric(fragments$length) <= maxLength)
-  plot(as.vector(fragmentData$length), as.vector(fragmentData$frequency), type = "h", main = "Fragment frequencies", lty = 1, xlab = "length", ylab = "frequency")
+    fragmentData = subset(fragments, as.numeric(fragments$length) >= minLength & as.numeric(fragments$length) <= maxLength)
+    plot(as.vector(fragmentData$length), as.vector(fragmentData$frequency), type = "h", main = "Fragment frequencies", lty = 1, xlab = "length", ylab = "frequency")
 }
 
 

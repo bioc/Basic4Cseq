@@ -12,9 +12,9 @@
 \usage{chooseNearCisFragments(expData, regionCoordinates, deleteViewpoint = TRUE)}
 
 \arguments{
-  \item{expData}{Experiment data of class \code{Data4Cseq} with information on the 4C-seq experiment, including fragment data for the viewpoint chromosome}
-  \item{regionCoordinates}{Interval on the viewpoint chromosome for the intended visualization}
-  \item{deleteViewpoint}{If TRUE, delete all fragments that intersect with the experiment's viewpoint interval}
+    \item{expData}{Experiment data of class \code{Data4Cseq} with information on the 4C-seq experiment, including fragment data for the viewpoint chromosome}
+    \item{regionCoordinates}{Interval on the viewpoint chromosome for the intended visualization}
+    \item{deleteViewpoint}{If TRUE, delete all fragments that intersect with the experiment's viewpoint interval}
 }
 
 \value{A data frame containing the chosen near-cis fragments}
@@ -22,10 +22,10 @@
 \note{Viewpoint fragments are removed per default to prevent bias through overrepresented sequences caused by self-ligation. These fragments can be included, but should be interpreted with caution.}
 
 \examples{
-  # read example data
-  data(liverData)
-  fragments<-chooseNearCisFragments(liverData, regionCoordinates = c(20800000, 21000000))
-  head(fragments)
+    # read example data
+    data(liverData)
+    fragments<-chooseNearCisFragments(liverData, regionCoordinates = c(20800000, 21000000))
+    head(fragments)
 }
 
 \author{Carolin Walter}

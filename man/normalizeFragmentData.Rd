@@ -12,15 +12,15 @@ This function provides a simple RPM (reads per million) normalization for near-c
 \usage{normalizeFragmentData(expData)}
 
 \arguments{
-  \item{expData}{Experiment data of class \code{Data4Cseq} with information on the 4C-seq experiment}
+    \item{expData}{Experiment data of class \code{Data4Cseq} with information on the 4C-seq experiment}
 }
 
 \value{Data frame with RPM-normalized data}
 
 \examples{
-  data(liverDataRaw)
-  normalizedFragments<-normalizeFragmentData(liverDataRaw)
-  head(normalizedFragments)
+    data(liverDataRaw)
+    normalizedFragments<-normalizeFragmentData(liverDataRaw)
+    head(normalizedFragments)
 }
 
 \author{Carolin Walter}

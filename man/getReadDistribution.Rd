@@ -13,10 +13,10 @@ This function provides some 4C-seq quality statistics based on the experiment's 
 }
 
 \arguments{
-  \item{expData}{Experiment data of class \code{Data4Cseq} with information on the 4C-seq experiment}
-  \item{distanceFromVP}{Distance from the viewpoint that is checked for covered fragments}
-  \item{useFragEnds}{If TRUE, the function uses fragment end data; if FALSE, an average value for whole fragments is used.}
-  \item{outputName}{An optional name for an output text file containing the statistics data}
+    \item{expData}{Experiment data of class \code{Data4Cseq} with information on the 4C-seq experiment}
+    \item{distanceFromVP}{Distance from the viewpoint that is checked for covered fragments}
+    \item{useFragEnds}{If TRUE, the function uses fragment end data; if FALSE, an average value for whole fragments is used.}
+    \item{outputName}{An optional name for an output text file containing the statistics data}
 }
 
 \value{Text with statistics data on the 4C-seq experiment}
@@ -28,8 +28,8 @@ Text export is supported; if no file name is provided, the results are printed o
 }
 
 \examples{
-  data(liverData)
-  getReadDistribution(liverData)
+    data(liverData)
+    getReadDistribution(liverData)
 }
 
 \author{Carolin Walter}

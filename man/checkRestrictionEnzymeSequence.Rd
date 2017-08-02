@@ -12,11 +12,11 @@
 \usage{checkRestrictionEnzymeSequence(firstCutter, inputFileName, outputFileName = "output.sam", keepOnlyUniqueReads = TRUE, writeStatistics = TRUE)}
 
 \arguments{
-  \item{firstCutter}{First restriction enzyme sequence of the 4C-seq experiment}
-  \item{inputFileName}{Name of the input SAM file that contains aligned reads for the 4C-seq experiment}
-  \item{outputFileName}{Name of the output SAM file that is created to store the filtered 4C-seq reads}
-  \item{keepOnlyUniqueReads}{If TRUE, delete non-unique reads. Information in the SAM flag field is used to determine whether a read is unique or not.}
-  \item{writeStatistics}{If TRUE, write statistics (e.g. the number of unique reads) to a text file}
+    \item{firstCutter}{First restriction enzyme sequence of the 4C-seq experiment}
+    \item{inputFileName}{Name of the input SAM file that contains aligned reads for the 4C-seq experiment}
+    \item{outputFileName}{Name of the output SAM file that is created to store the filtered 4C-seq reads}
+    \item{keepOnlyUniqueReads}{If TRUE, delete non-unique reads. Information in the SAM flag field is used to determine whether a read is unique or not.}
+    \item{writeStatistics}{If TRUE, write statistics (e.g. the number of unique reads) to a text file}
 }
 
 \details{
@@ -28,10 +28,10 @@ Valid 4C-seq reads start at a primary restriction site and continue with its dow
 \note{The use of the function is only possible if the restriction enzyme sequence is not trimmed or otherwise absent.}
 
 \examples{
-  if(interactive()) {
-    file <- system.file("extdata", "fetalLiverCutter.sam", package="Basic4Cseq")
-    checkRestrictionEnzymeSequence("aagctt", file)
-  }
+    if(interactive()) {
+        file <- system.file("extdata", "fetalLiverCutter.sam", package="Basic4Cseq")
+        checkRestrictionEnzymeSequence("aagctt", file)
+    }
 }
 
 \author{Carolin Walter}

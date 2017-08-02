@@ -10,21 +10,21 @@ This function is a small convenience function to plot the results of \code{simul
 }
 
 \usage{
-  drawDigestionFragmentHistogram(fragments, minLength = 0, maxLength = 10000)
+    drawDigestionFragmentHistogram(fragments, minLength = 0, maxLength = 10000)
 }
 
 \arguments{
-  \item{fragments}{Fragment data to visualize (data frame with lengths and corresponding frequencies)}
-  \item{minLength}{Minimum fragment length to visualize}
-  \item{maxLength}{Maximum fragment length to visualize}
+    \item{fragments}{Fragment data to visualize (data frame with lengths and corresponding frequencies)}
+    \item{minLength}{Minimum fragment length to visualize}
+    \item{maxLength}{Maximum fragment length to visualize}
 }
 
 \value{Histogram plot of the fragment data}
 
 \examples{
-  shortTestGenome = "ATCCATGTAGGCTAAGTACACATGTTAAGGTACAGTACAATTGCACGATCAT"
-  fragments = simulateDigestion("catg", "gtac", shortTestGenome)
-  drawDigestionFragmentHistogram(fragments)
+    shortTestGenome = "ATCCATGTAGGCTAAGTACACATGTTAAGGTACAGTACAATTGCACGATCAT"
+    fragments = simulateDigestion("catg", "gtac", shortTestGenome)
+    drawDigestionFragmentHistogram(fragments)
 }
 
 \author{Carolin Walter}

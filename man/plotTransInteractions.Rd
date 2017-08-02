@@ -15,15 +15,15 @@ plotTransInteractions(interactionFile, chromosomeViewpoint, coordViewpoint, ideo
 }
 
 \arguments{
-  \item{interactionFile}{Interaction interval data; either a file name or a data frame}
-  \item{chromosomeViewpoint}{Viewpoint chromosome of the 4C-seq experiment}
-  \item{coordViewpoint}{Viewpoint coordinates of the 4C-seq experiment}
-  \item{ideogramData}{Ideogram data to be visualized in the RCirco-plot; either a file name or a data frame}
-  \item{PlotColor}{Plot colours for the visualized interactions}
-  \item{expandBands}{If TRUE, add a specified value to the size of the interaction intervals to increase the visibility of very small interactions}
-  \item{expansionValue}{Value that is added to each interaction interval end}
-  \item{plotFileName}{Optional name for an output file}
-  \item{picDim}{Dimensions of the plot}
+    \item{interactionFile}{Interaction interval data; either a file name or a data frame}
+    \item{chromosomeViewpoint}{Viewpoint chromosome of the 4C-seq experiment}
+    \item{coordViewpoint}{Viewpoint coordinates of the 4C-seq experiment}
+    \item{ideogramData}{Ideogram data to be visualized in the RCirco-plot; either a file name or a data frame}
+    \item{PlotColor}{Plot colours for the visualized interactions}
+    \item{expandBands}{If TRUE, add a specified value to the size of the interaction intervals to increase the visibility of very small interactions}
+    \item{expansionValue}{Value that is added to each interaction interval end}
+    \item{plotFileName}{Optional name for an output file}
+    \item{picDim}{Dimensions of the plot}
 }
 
 \value{An RCircos-plot of trans interaction intervals}
@@ -41,12 +41,12 @@ Splinter, E., de Wit, E., van de Werken, H., et al. (2012) Determining long-rang
 }
 
 \examples{
-  if(interactive()) {
-    library(RCircos)
-    interactions <- system.file("extdata", "transInteractionData.txt", package="Basic4Cseq")
-    ideograms <- system.file("extdata", "RCircos_GRCm38_ideogram.csv", package="Basic4Cseq")
-    plotTransInteractions(interactions, "10", c(20000042, 20001000), ideograms, PlotColor = "blue", expandBands = TRUE, expansionValue = 1000000, plotFileName = "")
-  }
+    if(interactive()) {
+        library(RCircos)
+        interactions <- system.file("extdata", "transInteractionData.txt", package="Basic4Cseq")
+        ideograms <- system.file("extdata", "RCircos_GRCm38_ideogram.csv", package="Basic4Cseq")
+        plotTransInteractions(interactions, "10", c(20000042, 20001000), ideograms, PlotColor = "blue", expandBands = TRUE, expansionValue = 1000000, plotFileName = "")
+    }
 }
 
 \author{Carolin Walter}

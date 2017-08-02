@@ -5,41 +5,45 @@ import(caTools)
 import(BSgenome.Ecoli.NCBI.20080805)
 import(RCircos)
 import(GenomicRanges)
-
+importFrom("grDevices", "dev.off", "heat.colors", "pdf", "tiff")
+importFrom("graphics", "axis", "lines", "par", "plot", "plot.window",
+    "points", "polygon", "rect", "text")
+importFrom("stats", "loess", "predict", "runmed")
+importFrom("utils", "read.table", "write.table")
 
 exportClasses(
-  Data4Cseq)
+    Data4Cseq)
 
 exportMethods(
-  prepare4CseqData,
-  createVirtualFragmentLibrary,
-  printBEDFragmentLibrary,
-  checkRestrictionEnzymeSequence,
-  giveEnzymeSequence,
-  readPointsOfInterestFile,
- 
-  readsToFragments,
-  chooseNearCisFragments,
-  normalizeFragmentData,
-  getReadDistribution,
-  visualizeViewpoint,
-  drawHeatmap,
+    prepare4CseqData,
+    createVirtualFragmentLibrary,
+    printBEDFragmentLibrary,
+    checkRestrictionEnzymeSequence,
+    giveEnzymeSequence,
+    readPointsOfInterestFile,
 
-  exportVisualizationFragmentData,
-  importVisualizationFragmentData,
-  printWigFile,
-  simulateDigestion,
-  drawDigestionFragmentHistogram,
-  plotTransInteractions,
+    readsToFragments,
+    chooseNearCisFragments,
+    normalizeFragmentData,
+    getReadDistribution,
+    visualizeViewpoint,
+    drawHeatmap,
 
-  Data4Cseq,
-  viewpointChromosome, "viewpointChromosome<-",
-  viewpointInterval, "viewpointInterval<-",
-  readLength, "readLength<-",
-  pointsOfInterest, "pointsOfInterest<-",
-  rawReads, "rawReads<-",
-  rawFragments, "rawFragments<-",
-  nearCisFragments, "nearCisFragments<-"
+    exportVisualizationFragmentData,
+    importVisualizationFragmentData,
+    printWigFile,
+    simulateDigestion,
+    drawDigestionFragmentHistogram,
+    plotTransInteractions,
+
+    Data4Cseq,
+    viewpointChromosome, "viewpointChromosome<-",
+    viewpointInterval, "viewpointInterval<-",
+    readLength, "readLength<-",
+    pointsOfInterest, "pointsOfInterest<-",
+    rawReads, "rawReads<-",
+    rawFragments, "rawFragments<-",
+    nearCisFragments, "nearCisFragments<-"
 )
 
 

@@ -12,8 +12,8 @@ This function is a small convenience function that reads in a prepared file with
 \usage{giveEnzymeSequence(fileNameDatabase, enzymeName)}
 
 \arguments{
-  \item{fileNameDatabase}{File name of the prepared enzyme database}
-  \item{enzymeName}{Name of the enzyme for which the sequence is to be returned}
+    \item{fileNameDatabase}{File name of the prepared enzyme database}
+    \item{enzymeName}{Name of the enzyme for which the sequence is to be returned}
 }
 
 \value{Character string with the restriction enzyme sequence}
@@ -23,8 +23,8 @@ This function is a small convenience function that reads in a prepared file with
 \note{For any custom-made enzyme list it is assumed that there are no duplicate enzyme names in the database.}
 
 \examples{
-  file <- system.file("extdata", "enzymeData.csv", package="Basic4Cseq")  
-  giveEnzymeSequence(file, "NlaIII")
+    file <- system.file("extdata", "enzymeData.csv", package="Basic4Cseq")  
+    giveEnzymeSequence(file, "NlaIII")
 }
 
 \author{Carolin Walter}

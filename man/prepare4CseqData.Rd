@@ -13,17 +13,19 @@ This function is an optional wrapper for the alignment and preliminary filtering
 }
 
 \arguments{
-  \item{fastqFileName}{The name of the fastq file that contains the 4C-seq reads}
-  \item{firstCutter}{First cutting enzyme sequence for the 4C-seq experiment, e.g. "AAGCTT"}
-  \item{fragmentLibrary}{Name of the fragment library to use for the current 4C-seq experiment; has to correspond to the chosen cutters and chosen genome}
-  \item{referenceGenome}{Name (plus path) of the reference genome to use}
-  \item{pathToBWA}{Path to BWA}
-  \item{pathToSam}{Path to samtools}
-  \item{pathToBED}{Path to bedtools}
-  \item{controlCutterSequence}{If TRUE, the function \code{checkRestrictionEnzymeSequence} is used to filter non-valid 4C-seq reads}
-  \item{bwaThreads}{Number of BWA threads}
-  \item{minFragEndLength}{Minimum fragment end length to use for BED export}
+    \item{fastqFileName}{The name of the fastq file that contains the 4C-seq reads}
+    \item{firstCutter}{First cutting enzyme sequence for the 4C-seq experiment, e.g. "AAGCTT"}
+    \item{fragmentLibrary}{Name of the fragment library to use for the current 4C-seq experiment; has to correspond to the chosen cutters and chosen genome}
+    \item{referenceGenome}{Name (plus path) of the reference genome to use}
+    \item{pathToBWA}{Path to BWA}
+    \item{pathToSam}{Path to samtools}
+    \item{pathToBED}{Path to bedtools}
+    \item{controlCutterSequence}{If TRUE, the function \code{checkRestrictionEnzymeSequence} is used to filter non-valid 4C-seq reads}
+    \item{bwaThreads}{Number of BWA threads}
+    \item{minFragEndLength}{Minimum fragment end length to use for BED export}
 }
+
+\value{computes and writes sorted .bam file for the data, as long as BWA, samtools and bedtools are available}
 
 \seealso{\code{\link{checkRestrictionEnzymeSequence}} 
 }
@@ -35,11 +37,11 @@ Helga Thorvaldsdottir, James T. Robinson, Jill P. Mesirov. Integrative Genomics 
 }
 
 \examples{
-  if(interactive()) {
-    # BWA, samtools and bedtools must be installed
-    # It is assumed that the example data files (from the package) are in the active directory
-    prepare4CseqData("veryShortExample.fastq", "CATG", "veryShortLib.csv", referenceGenome = "veryShortReference.fasta")
-  }
+    if(interactive()) {
+        # BWA, samtools and bedtools must be installed
+        # It is assumed that the example data files (from the package) are in the active directory
+        prepare4CseqData("veryShortExample.fastq", "CATG", "veryShortLib.csv", referenceGenome = "veryShortReference.fasta")
+    }
 }
 
 \author{Carolin Walter}

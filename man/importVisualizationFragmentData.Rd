@@ -12,15 +12,15 @@ This function is a simple helper function that can import near-cis data which wa
 \usage{importVisualizationFragmentData(fileName)}
 
 \arguments{
-  \item{fileName}{Name for the tab-separated file with near-cis fragment data}
+    \item{fileName}{Name for the tab-separated file with near-cis fragment data}
 }
 
 \value{Data frame containing the near-cis fragment data}
 
 \examples{
-  file <- system.file("extdata", "fetalLiver_finalFragments.csv", package="Basic4Cseq")
-  importVisualizationFragmentData(file)
-  head(file)
+    file <- system.file("extdata", "fetalLiver_finalFragments.csv", package="Basic4Cseq")
+    importVisualizationFragmentData(file)
+    head(file)
 }
 
 \author{Carolin Walter}

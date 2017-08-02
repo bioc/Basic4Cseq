@@ -12,15 +12,15 @@ This small helper function reads a tab-separated file with points of interest in
 \usage{readPointsOfInterestFile(poiFile)}
 
 \arguments{
-  \item{poiFile}{Name of the input file (tab-separated)}
+    \item{poiFile}{Name of the input file (tab-separated)}
 }
 
 \value{Data frame with information on points of interest for the near-cis visualizations}
 
 \examples{
-  file <- system.file("extdata", "fetalLiverVP.bed", package="Basic4Cseq")
-  pointsOfInterests = readPointsOfInterestFile(file)
-  pointsOfInterests
+    file <- system.file("extdata", "fetalLiverVP.bed", package="Basic4Cseq")
+    pointsOfInterests = readPointsOfInterestFile(file)
+    pointsOfInterests
 }
 
 \author{Carolin Walter}

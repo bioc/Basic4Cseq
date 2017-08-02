@@ -1,20 +1,21 @@
 Package: Basic4Cseq
 Type: Package
 Title: Basic4Cseq: an R/Bioconductor package for analyzing 4C-seq data
-Version: 1.13.0
-Date: 2015-08-24
+Version: 1.13.1
+Date: 2017-08-01
 Author: Carolin Walter
 Maintainer: Carolin Walter <carolin.walter@uni-muenster.de>
 Imports: methods, RCircos, BSgenome.Ecoli.NCBI.20080805
-Depends: R (>= 3.0.0), Biostrings, GenomicAlignments, caTools, GenomicRanges
+Depends: R (>= 3.4), Biostrings, GenomicAlignments, caTools,
+    GenomicRanges, grDevices, graphics, stats, utils
 Suggests: BSgenome.Hsapiens.UCSC.hg19
 Description: Basic4Cseq is an R/Bioconductor package for basic
-        filtering, analysis and subsequent visualization of 4C-seq
-        data. Virtual fragment libraries can be created for any
-        BSGenome package, and filter functions for both reads and
-        fragments and basic quality controls are included. Fragment
-        data in the vicinity of the experiment's viewpoint can be
-        visualized as a coverage plot based on a running median
-        approach and a multi-scale contact profile.
+    filtering, analysis and subsequent visualization of 4C-seq
+    data. Virtual fragment libraries can be created for any
+    BSGenome package, and filter functions for both reads and
+    fragments and basic quality controls are included. Fragment
+    data in the vicinity of the experiment's viewpoint can be
+    visualized as a coverage plot based on a running median
+    approach and a multi-scale contact profile.
 License: LGPL-3
-biocViews: Visualization, QualityControl
+biocViews: Visualization, QualityControl, Sequencing, Coverage, Alignment, RNASeq, SequenceMatching, DataImport

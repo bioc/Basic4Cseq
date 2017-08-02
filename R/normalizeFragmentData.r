@@ -1,15 +1,15 @@
 .normalizeFragmentData <- function(expData) {
-  
-  readCount = length(rawReads(expData))
-  relevantFragData = nearCisFragments(expData)
 
-  # simple RPM normalization (reads per million)
-  RPMFrags <- relevantFragData
-  RPMFrags$leftFragEndReads <- RPMFrags$leftFragEndReads / readCount * 1000000
-  RPMFrags$rightFragEndReads <- RPMFrags$rightFragEndReads / readCount * 1000000
-  RPMFrags$fragEndReadsAverage <- RPMFrags$fragEndReadsAverage / readCount * 1000000
+    readCount = length(rawReads(expData))
+    relevantFragData = nearCisFragments(expData)
 
-  return(RPMFrags)
+    # simple RPM normalization (reads per million)
+    RPMFrags <- relevantFragData
+    RPMFrags$leftFragEndReads <- RPMFrags$leftFragEndReads / readCount * 1000000
+    RPMFrags$rightFragEndReads <- RPMFrags$rightFragEndReads / readCount * 1000000
+    RPMFrags$fragEndReadsAverage <- RPMFrags$fragEndReadsAverage / readCount * 1000000
+
+    return(RPMFrags)
 }
 
 

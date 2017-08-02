@@ -1,10 +1,10 @@
 .giveEnzymeSequence <- function(fileNameDatabase, enzymeName) {
 
-  enzymeDB = read.table(fileNameDatabase, header = TRUE)
-  chosenEnzyme = subset(enzymeDB, enzymeDB$name == enzymeName)
-  enzymeSequence = as.character(chosenEnzyme[1,2])  
+    enzymeDB = read.table(fileNameDatabase, header = TRUE)
+    chosenEnzyme = subset(enzymeDB, enzymeDB$name == enzymeName)
+    enzymeSequence = as.character(chosenEnzyme[1,2])  
 
-  return(enzymeSequence)  
+    return(enzymeSequence)  
 }
 
 

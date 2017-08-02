@@ -2,62 +2,62 @@
 
 setMethod("Data4Cseq", signature(viewpointChromosome="character", viewpointInterval="numeric", readLength="numeric", pointsOfInterest="data.frame", rawReads="GAlignments"),
     function(viewpointChromosome, viewpointInterval, readLength, pointsOfInterest, rawReads) {
-        
-      for (i in 1:nrow(pointsOfInterest)) {
-        if (pointsOfInterest[i,1] != viewpointChromosome) {
-          message("One point of interest is not on the viewpoint chromosome and therefore not visible in a near-cis visualization. Alternatively, check for 'chrX / X' notation variety.")
-        }        
-      }
-      pointsOfInterest = subset(pointsOfInterest, pointsOfInterest[,1] == viewpointChromosome)
 
-      if (length(readLength) == 1) {
-        if (readLength < 10) {
-          message("The specified read length seems to be very short, please check if the number is correct")
+        for (i in 1:nrow(pointsOfInterest)) {
+            if (pointsOfInterest[i,1] != viewpointChromosome) {
+                message("One point of interest is not on the viewpoint chromosome and therefore not visible in a near-cis visualization. Alternatively, check for 'chrX / X' notation variety.")
+            }        
         }
-        if (readLength > 1000) {
-          message("The specified read length seems to be very long, please check if the number is correct")
+        pointsOfInterest = subset(pointsOfInterest, pointsOfInterest[,1] == viewpointChromosome)
+
+        if (length(readLength) == 1) {
+            if (readLength < 10) {
+                message("The specified read length seems to be very short, please check if the number is correct")
+            }
+            if (readLength > 1000) {
+                message("The specified read length seems to be very long, please check if the number is correct")
+            }
         }
-      }
 
-      if (viewpointInterval[1] > viewpointInterval[2]) {
-        temp = viewpointInterval[1]
-        viewpointInterval[1] = viewpointInterval[2]
-        viewpointInterval[2] = temp
-        message("The viewpoint coordinates (a,b) are expected to have the form a < b; switching coordinates...")
-      }
+        if (viewpointInterval[1] > viewpointInterval[2]) {
+            temp = viewpointInterval[1]
+            viewpointInterval[1] = viewpointInterval[2]
+            viewpointInterval[2] = temp
+            message("The viewpoint coordinates (a,b) are expected to have the form a < b; switching coordinates...")
+        }
 
-      newData4CseqObject = new("Data4Cseq", viewpointChromosome = viewpointChromosome, viewpointInterval = viewpointInterval, readLength = readLength, pointsOfInterest = pointsOfInterest, rawReads = rawReads)
-      
-      return(newData4CseqObject)
+        newData4CseqObject = new("Data4Cseq", viewpointChromosome = viewpointChromosome, viewpointInterval = viewpointInterval, readLength = readLength, pointsOfInterest = pointsOfInterest, rawReads = rawReads)
+
+        return(newData4CseqObject)
     }
 )
 
 
 setMethod("Data4Cseq", signature(viewpointChromosome="character", viewpointInterval="numeric", readLength="numeric", pointsOfInterest="missing", rawReads="missing"),
     function(viewpointChromosome, viewpointInterval, readLength, pointsOfInterest, rawReads) {
-        
-      if (length(readLength) == 1) {
-        if (readLength < 10) {
-          message("The specified read length seems to be very short, please check if the number is correct")
-        }
-        if (readLength > 1000) {
-          message("The specified read length seems to be very long, please check if the number is correct")
-        }
-      }
 
-      if (viewpointInterval[1] > viewpointInterval[2]) {
-        temp = viewpointInterval[1]
-        viewpointInterval[1] = viewpointInterval[2]
-        viewpointInterval[2] = temp
-        message("The viewpoint coordinates (a,b) are expected to have the form a < b; switching coordinates...")
-      }
+        if (length(readLength) == 1) {
+            if (readLength < 10) {
+                message("The specified read length seems to be very short, please check if the number is correct")
+            }
+            if (readLength > 1000) {
+                message("The specified read length seems to be very long, please check if the number is correct")
+            }
+        }
 
-      newData4CseqObject = new("Data4Cseq", viewpointChromosome = viewpointChromosome, viewpointInterval = viewpointInterval)
-      
-      return(newData4CseqObject)
+        if (viewpointInterval[1] > viewpointInterval[2]) {
+            temp = viewpointInterval[1]
+            viewpointInterval[1] = viewpointInterval[2]
+            viewpointInterval[2] = temp
+            message("The viewpoint coordinates (a,b) are expected to have the form a < b; switching coordinates...")
+        }
+
+        newData4CseqObject = new("Data4Cseq", viewpointChromosome = viewpointChromosome, viewpointInterval = viewpointInterval)
+
+        return(newData4CseqObject)
     }
 )
-     
+
 
 # "set" and "replace" methods for class "Data4Cseq"
 
