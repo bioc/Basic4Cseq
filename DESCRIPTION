@@ -1,7 +1,7 @@
 Package: Basic4Cseq
 Type: Package
 Title: Basic4Cseq: an R/Bioconductor package for analyzing 4C-seq data
-Version: 1.18.0
+Version: 1.18.1
 Date: 2017-08-01
 Author: Carolin Walter
 Maintainer: Carolin Walter <carolin.walter@uni-muenster.de>
@@ -18,4 +18,4 @@ Description: Basic4Cseq is an R/Bioconductor package for basic
     visualized as a coverage plot based on a running median
     approach and a multi-scale contact profile.
 License: LGPL-3
-biocViews: Visualization, QualityControl, Sequencing, Coverage, Alignment, RNASeq, SequenceMatching, DataImport
+biocViews: ImmunoOncology, Visualization, QualityControl, Sequencing, Coverage, Alignment, RNASeq, SequenceMatching, DataImport
