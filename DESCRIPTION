@@ -1,7 +1,7 @@
 Package: Basic4Cseq
 Type: Package
 Title: Basic4Cseq: an R/Bioconductor package for analyzing 4C-seq data
-Version: 1.41.0
+Version: 1.42.0
 Date: 2017-08-01
 Author: Carolin Walter
 Maintainer: Carolin Walter <carolin.walter@uni-muenster.de>
